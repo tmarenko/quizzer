@@ -129,7 +129,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+preview.png
 # tests data
 tests/*
 run_tests.py
