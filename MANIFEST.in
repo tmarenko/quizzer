@@ -1,0 +1,6 @@
+include LICENSE.rst
+include quizzer/schema.sql
+graft quizzer/static
+graft quizzer/templates
+graft tests
+global-exclude *.pyc

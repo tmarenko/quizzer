@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}{{get_locale.result_for}} "{{ quiz.name }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<h3>
+    {{get_locale.correct_answers}}: {{ answers_ratio[0] }} {{get_locale.out_of}} {{ answers_ratio[1] }}
+</h3>
+
+<form action="{{ url_for('quizzes.index') }}">
+    <button type="submit" class="btn btn-primary">
+        {{get_locale.close}}
+    </button>
+</form>
+
+{% endblock %}

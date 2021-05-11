@@ -1,0 +1,61 @@
+<!doctype html>
+<title>{% block title %}{% endblock %}</title>
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+<link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+<link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+<script src="{{ url_for('static', filename='jquery-3.5.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-items">
+        <h1 class="mr-auto">
+            <a href="{{ url_for('index') }}">
+                Quizzer
+            </a>
+        </h1>
+        <div class="navbar-nav ml-auto form-inline">
+            {% if g.user %}
+            <span class="px-2">
+                {{ g.user['username'] }}
+            </span>
+            <form class="form-inline my-2 my-lg-0 navbar-form px-2" action="{{ url_for('quizzes.history') }}">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                    {{get_locale.history}}
+                </button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 navbar-form px-2" action="{{ url_for('auth.logout') }}">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+                    {{get_locale.log_out}}
+                </button>
+            </form>
+            {% else %}
+            <form class="form-inline my-2 my-lg-0 navbar-form px-2" action="{{ url_for('auth.register') }}">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                    {{get_locale.register}}
+                </button>
+            </form>
+            <form class="form-inline my-2 my-lg-0 navbar-form" action="{{ url_for('auth.login') }}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    {{get_locale.log_in}}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<section class="content p-4">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>

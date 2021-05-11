@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+{% if g.user and g.is_admin %}
+<form class="form-inline my-2 my-lg-0 navbar-form pb-3" action="{{ url_for('quizzes.create') }}">
+    <button class="btn btn-success btn-lg" type="submit">
+        {{get_locale.create_new}}
+    </button>
+</form>
+{% endif %}
+
+
+{% if quizzes %}
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("ul li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<input class="form-control" id="myInput" type="text" placeholder="{{get_locale.search}}">
+<br>
+{%endif%}
+
+<ul class="list-group list-group-flush">
+    {% for quiz in quizzes %}
+    <li class="quiz list-group-item">
+        <header class="form-inline">
+            <div>
+                <h4>
+                    {% if g.user.is_admin %}
+                    {{ quiz['name'] }}
+                    {% endif %}
+                    {% if not g.user.is_admin %}
+                    <a href="{{ url_for('quizzes.solve', quiz_id=quiz['id']) }}">
+                        '{{ quiz['name'] }}' {{get_locale.by}} {{quiz['author_name'] }}
+                    </a>
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="form-inline ml-auto">
+                {% if g.user['id'] == quiz['author_id'] %}
+                <form class="form-inline my-2 my-lg-0 navbar-form px-2"
+                      action="{{ url_for('quizzes.edit', quiz_id=quiz['id']) }}">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+                        {{get_locale.edit}}
+                    </button>
+                </form>
+                <form class="form-inline my-2 my-lg-0 navbar-form px-2"
+                      action="{{ url_for('quizzes.delete', quiz_id=quiz['id']) }}" method="post">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+                        {{get_locale.delete}}
+                    </button>
+                </form>
+                {% endif %}
+                {% if not g.user.is_admin %}
+                <form class="form-inline my-2 my-lg-0 navbar-form px-2"
+                      action="{{ url_for('quizzes.solve', quiz_id=quiz['id']) }}">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                        {{get_locale.solve}}
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </header>
+    </li>
+    {% if not loop.last %}
+    <hr>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}

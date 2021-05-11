@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}{{get_locale.history}}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if quiz_info %}
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<input class="form-control" id="myInput" type="text" placeholder="{{get_locale.search}}">
+<br>
+{%endif%}
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">{{get_locale.quiz_name}}</th>
+        <th scope="col">{{get_locale.author_name}}</th>
+        <th scope="col">{{get_locale.student_name}}</th>
+        <th scope="col">{{get_locale.quiz_result}}</th>
+    </tr>
+    </thead>
+    <tbody id="myTable">
+    {% for info in quiz_info %}
+    <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{info['quiz_name']}}</td>
+        <td>{{info['author_name']}}</td>
+        <td>{{info['user_name']}}</td>
+        <td>{{info['correct_answers']}} {{get_locale.of}} {{info['total_answers']}}
+            ({{ (info['correct_answers'] * 100 / info['total_answers'])|round(1) }} %)
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<form action="{{ url_for('quizzes.index') }}">
+    <button type="submit" class="btn btn-primary">
+        {{get_locale.close}}
+    </button>
+</form>
+
+{% endblock %}

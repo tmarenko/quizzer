@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}{{get_locale.solving}} "{{ quiz.name }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="questions" class="list-group col mb-2">
+    {% for question in quiz.questions %}
+    <div class="row">
+        <div id="question{{ question.question_id }}" class="list-group-item question">
+            <h3 class="panel-title">
+                {{question.text}}
+            </h3>
+            {% for option in question.options %}
+            <div class="radio">
+                <label>
+                    <input type="radio" name="{{ question.question_id }}"
+                           id="option{{ option.answer_id }}"
+                           value="{{ option.answer_id }}">
+                    {{option.text}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="panel-footer">
+        <button type="submit" class="btn btn-success btn-add">
+            {{get_locale.submit}}
+        </button>
+    </div>
+</form>
+{% endblock %}

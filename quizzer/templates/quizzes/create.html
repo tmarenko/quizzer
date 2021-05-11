@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script type='text/javascript'>
+  var locale = JSON.parse(`{{get_locale.dict()|safe}}`);
+
+</script>
+<script src="{{ url_for('static', filename='quiz.manager.js') }}"></script>
+<script src="{{ url_for('static', filename='Sortable.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<br>
+<h1>
+    {% block title %}{{get_locale.new_quiz}}{% endblock %}
+</h1>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">
+            {{get_locale.name}}
+        </span>
+    </div>
+    <input type="text" id="quiz-name" class="form-control mr-3" aria-label="Default"
+           aria-describedby="inputGroup-sizing-default">
+    <button type="button" class="btn btn-success" onclick="saveQuiz()">
+        {{get_locale.save}}
+    </button>
+</div>
+
+<br>
+<div>
+    <div id="questions" class="list-group col mb-2"></div>
+    <button type="button" class="btn btn-outline-success btn-add" onclick="addQuestion()" id="add-question">
+        {{get_locale.add_question}}
+    </button>
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="login-form">
+    <form method="post" class="mb-4 p-4">
+        <h2 class="text-center  mb-3">
+            {{get_locale.register_form}}
+        </h2>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="{{get_locale.username}}" name="username" id="username"
+                   required="required">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="{{get_locale.password}}" name="password"
+                   id="password" required="required">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block font-weight-bold">
+                {{get_locale.register}}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

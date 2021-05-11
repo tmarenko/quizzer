@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script type='text/javascript'>
+  var locale = JSON.parse(`{{get_locale.dict()|safe}}`);
+</script>
+<script src="{{ url_for('static', filename='quiz.manager.js') }}"></script>
+<script src="{{ url_for('static', filename='Sortable.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>
+    {% block title %}{{get_locale.edit}} "{{ quiz.name }}"{% endblock %}
+</h1>
+<div class="input-group mb-3" quiz-name="{{ quiz.name }}" quiz-id="{{ quiz.quiz_id }}"
+     quiz-author-id="{{ quiz.author_id }}">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">
+            {{get_locale.name}}
+        </span>
+    </div>
+    <input type="text" id="quiz-name" class="form-control mr-3" aria-label="Default"
+           aria-describedby="inputGroup-sizing-default" value="{{ quiz.name }}">
+    <button type="button" class="btn btn-success" onclick="saveQuiz({{ quiz.quiz_id }})">
+        {{get_locale.save}}
+    </button>
+</div>
+
+<br>
+<div>
+    <div id="questions" class="list-group col mb-2">
+        {% for question in quiz.questions %}
+        {% set outer_loop = loop %}
+        <div class="row" question-id="{{ question.question_id }}">
+            <div class="list-group-item question" name="question_{{ loop.index }}">
+                <div class="ignore-drag">
+                    <textarea type="text" name="question_text">
+                        {{ question.text }}
+                    </textarea>
+                </div>
+                <div class="ignore-drag">
+                    {% for option in question.options %}
+                    <div class="d-flex m-2" option-id="{{ option.answer_id }}">
+                        <input type="radio" name="optionRadios{{ outer_loop.index }}"
+                               {% if option.checked %}checked{%endif%}>
+                        <input type="text" name="option{{ loop.index }}" value="{{ option.text }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" onclick="removeRow(this)" class="btn btn-outline-danger float-right ignore-drag">
+                    {{get_locale.remove}}
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="btn btn-outline-success btn-add" onclick="addQuestion()">
+        {{get_locale.add_question}}
+    </button>
+</div>
+{% endblock %}
